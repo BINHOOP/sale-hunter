@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sale Hunter</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <header>
+        <h1>Sale Hunter</h1>
+        <nav>
+            <ul>
+                <li><a href="#shopee">Shopee</a></li>
+                <li><a href="#amazon">Amazon</a></li>
+                <li><a href="#tiktok">TikTok Livestream</a></li>
+                <li><a href="#alibaba">Alibaba</a></li>
+                <li><a href="#premium">Premium</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="shopee">
+            <h2>Shopee Deals</h2>
+            <div id="shopee-products" class="product-grid"></div>
+        </section>
+        <section id="amazon">
+            <h2>Amazon Deals</h2>
+            <div id="amazon-products" class="product-grid"></div>
+        </section>
+        <section id="tiktok">
+            <h2>TikTok Livestream</h2>
+            <div id="tiktok-products" class="product-grid"></div>
+        </section>
+        <section id="alibaba">
+            <h2>Alibaba Deals</h2>
+            <div id="alibaba-products" class="product-grid"></div>
+        </section>
+        <section id="premium">
+            <button onclick="openStripeCheckout()">Upgrade to Premium</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Sale Hunter</p>
+    </footer>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
