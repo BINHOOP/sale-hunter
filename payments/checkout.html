@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Sale Hunter</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <div class="checkout-container">
+        <h2>Complete Your Purchase</h2>
+        <div id="checkout"></div>
+    </div>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const stripe = Stripe('pk_test_51QN0YHB6TbyJrfOTuFy01eVZeKYi6TdNGb4LsGi30bo1J0ntpzEr3ec2AsAa8Fzu2QKSv24ywGI2fSPv9j5EcODe00I89sJkkU');
+
+        fetch('/create-checkout-session', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                productId: 'prod_RK9E2qz8JgIbf7'
+            })
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (sessionId) {
+            return stripe.redirectToCheckout({ sessionId: sessionId.url });
+        })
+        .catch(function (error) {
+            console.error('Error:', error);
+        });
+    </script>
+</body>
+</html>
