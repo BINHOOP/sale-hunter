@@ -1,9 +1,8 @@
-export function generateAffiliateLink(productLink, platform) {
-    let affiliateID = 'your-affiliate-id';
-    if (platform === 'amazon') {
-        return `${productLink}?tag=${affiliateID}`;
-    } else if (platform === 'shopee') {
-        return `${productLink}&affiliate_id=${affiliateID}`;
-    }
-    return productLink;
-}
+// Handle affiliate links
+const affiliateLinks = document.querySelectorAll('.affiliate-link');
+affiliateLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+        const affiliateCode = link.getAttribute('data-affiliate-code');
+        window.location.href = `${link.href}?affiliate=${affiliateCode}`;
+    });
+});

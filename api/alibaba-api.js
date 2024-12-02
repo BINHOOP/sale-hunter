@@ -1,9 +1,7 @@
-// Example for fetching Alibaba products via a mock API
+// Mock API integration for Alibaba
 async function fetchAlibabaDeals() {
-    return fetch('https://api.alibaba.com/products?category=deals')
-        .then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => console.error('Error fetching Alibaba products:', error));
+    return [
+        { id: 1, name: "Alibaba Deal 1", description: "Amazing Alibaba Deal", price: "$30", image: "/images/alibaba1.jpg" },
+        { id: 2, name: "Alibaba Deal 2", description: "Great Alibaba Offer", price: "$60", image: "/images/alibaba2.jpg" }
+    ];
 }

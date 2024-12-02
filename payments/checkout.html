@@ -9,31 +9,32 @@
 <body>
     <div class="checkout-container">
         <h2>Complete Your Purchase</h2>
-        <div id="checkout"></div>
-    </div>
-
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        const stripe = Stripe('pk_test_51QN0YHB6TbyJrfOTuFy01eVZeKYi6TdNGb4LsGi30bo1J0ntpzEr3ec2AsAa8Fzu2QKSv24ywGI2fSPv9j5EcODe00I89sJkkU');
-
-        fetch('/create-checkout-session', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                productId: 'prod_RK9E2qz8JgIbf7'
+        <script>
+            const stripe = Stripe('pk_test_51QN0YHB6TbyJrfOTuFy01eVZeKYi6TdNGb4LsGi30bo1J0ntpzEr3ec2AsAa8Fzu2QKSv24ywGI2fSPv9j5EcODe00I89sJkkU');
+        
+            // Mã gửi yêu cầu tới backend để tạo session checkout
+            fetch('/create-checkout-session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId: 'prod_RK9E2qz8JgIbf7' // Gói Premium bạn muốn sử dụng
+                })
             })
-        })
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (sessionId) {
-            return stripe.redirectToCheckout({ sessionId: sessionId.url });
-        })
-        .catch(function (error) {
-            console.error('Error:', error);
-        });
-    </script>
-</body>
-</html>
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                // Chuyển hướng người dùng tới Stripe checkout page
+                stripe.redirectToCheckout({ sessionId: data.sessionId }).then(function (result) {
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                });
+            })
+            .catch(function (error) {
+                console.error('Error:', error);
+            });
+        </script>
+        

@@ -1,9 +1,7 @@
-// Example for fetching TikTok livestream deals via a mock API
-async function fetchTikTokLivestreamDeals() {
-    return fetch('https://api.tiktok.com/live/deals')
-        .then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => console.error('Error fetching TikTok products:', error));
+// Mock API integration for TikTok
+async function fetchTikTokDeals() {
+    return [
+        { id: 1, name: "TikTok Deal 1", description: "Best Deal from TikTok", price: "$25", image: "/images/tiktok1.jpg" },
+        { id: 2, name: "TikTok Deal 2", description: "Trending TikTok Offer", price: "$40", image: "/images/tiktok2.jpg" }
+    ];
 }

@@ -1,9 +1,7 @@
-// Example for fetching Shopee products via a mock API
+// Mock API integration for Shopee
 async function fetchShopeeDeals() {
-    return fetch('https://api.shopee.com/v1/products?category=deals')
-        .then(response => response.json())
-        .then(data => {
-            return data;
-        })
-        .catch(error => console.error('Error fetching Shopee products:', error));
+    return [
+        { id: 1, name: "Shopee Deal 1", description: "Shopee Exclusive", price: "$15", image: "/images/shopee1.jpg" },
+        { id: 2, name: "Shopee Deal 2", description: "Discounted Shopee Item", price: "$35", image: "/images/shopee2.jpg" }
+    ];
 }

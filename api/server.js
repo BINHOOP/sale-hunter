@@ -1,30 +1,30 @@
-const express = require('express');
-const stripe = require('stripe')('sk_test_51QN0YHB6TbyJrfOTbDOrv3Cmxq682haJGItgRiFtkNcNygL3KSS6LrpRDjgH5k0VED5eqmhUzaKG21eDg8IG6YV200aPdxHizM'); // Replace with your actual Stripe secret key
+const express = require("express");
 const app = express();
+const port = 3000;
 
+// Middleware
 app.use(express.json());
+app.use(express.static("public"));
 
-// API route for creating checkout sessions
-app.post('/create-checkout-session', async (req, res) => {
-    const { plan } = req.body;
-    const priceId = plan === 'premium' ? 'prod_RK9E2qz8JgIbf7' : 'prod_RK9IVCThmqGvSS'; // Update with your actual price IDs
+// Routes
+const { fetchAmazonDeals } = require("./api/amazon-api");
+const { fetchShopeeDeals } = require("./api/shopee-api");
+const { fetchTikTokDeals } = require("./api/tiktok-api");
+const { fetchAlibabaDeals } = require("./api/alibaba-api");
 
-    try {
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [{ price: priceId, quantity: 1 }],
-            mode: 'subscription', // Use "subscription" for recurring payments
-            success_url: 'http://yourdomain.com/success',
-            cancel_url: 'http://yourdomain.com/cancel',
-        });
+app.get("/api/deals", async (req, res) => {
+    const amazonDeals = await fetchAmazonDeals();
+    const shopeeDeals = await fetchShopeeDeals();
+    const tiktokDeals = await fetchTikTokDeals();
+    const alibabaDeals = await fetchAlibabaDeals();
 
-        res.json({ id: session.id });
-    } catch (error) {
-        console.error('Error creating checkout session:', error);
-        res.status(500).json({ error: error.message });
-    }
+    res.json([...amazonDeals, ...shopeeDeals, ...tiktokDeals, ...alibabaDeals]);
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+// Stripe checkout API
+const { createCheckoutSession } = require("./payments/stripe");
+app.post("/create-checkout-session", createCheckoutSession);
+
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });

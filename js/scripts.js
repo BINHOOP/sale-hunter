@@ -1,28 +1,32 @@
-async function fetchProducts(endpoint, containerId) {
-    try {
-        const response = await fetch(endpoint);
-        const data = await response.json();
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
-        data.items.forEach((item, index) => {
-            if (!item.premium && index > 5) return; // Giới hạn 5 sản phẩm cho non-premium
-            const productCard = `
-                <div class="product-card">
-                    <img src="${item.image}" alt="${item.name}">
-                    <h3>${item.name}</h3>
-                    <p>Price: ${item.price}</p>
-                    <a href="${item.link}" target="_blank">Buy Now</a>
-                </div>`;
-            container.insertAdjacentHTML('beforeend', productCard);
+// Fetch product deals from API and display them
+fetch('/api/deals')
+    .then(response => response.json())
+    .then(deals => {
+        const productsContainer = document.querySelector('.products');
+        deals.forEach(deal => {
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.innerHTML = `
+                <img src="${deal.image}" alt="${deal.name}">
+                <h3>${deal.name}</h3>
+                <p>${deal.description}</p>
+                <p><strong>${deal.price}</strong></p>
+                <button>Buy Now</button>
+            `;
+            productsContainer.appendChild(productCard);
         });
-    } catch (error) {
-        console.error(`Error fetching ${containerId} data:`, error);
-    }
-}
+    });
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetchProducts('/api/shopee-products', 'shopee-list');
-    fetchProducts('/api/amazon-products', 'amazon-list');
-    fetchProducts('/api/tiktok-livestream', 'tiktok-list');
-    fetchProducts('/api/alibaba-products', 'alibaba-list');
+// Stripe checkout integration (for Premium plans)
+document.querySelectorAll('.buy-button').forEach(button => {
+    button.addEventListener('click', () => {
+        const productId = button.getAttribute('data-product-id');
+        fetch('/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId })
+        })
+        .then(res => res.json())
+        .then(data => window.location = data.url);
+    });
 });
